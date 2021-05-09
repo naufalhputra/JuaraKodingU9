@@ -16,11 +16,11 @@ export class UpdateDataBio extends Component {
     }
 
     handleUpdate(){
-        console.log(this.state)
-        axios.put(`http://192.168.1.7:8080/bio/updateBio/${this.state.id}`,this.state)
+        console.log(this.state.id)
+        axios.put(`http://192.168.1.7:8080/bio/updatebio/${this.state.id}`,this.state)
         .then( (response) => {
         
-                  // console.log(response)
+                  console.log(response)
                   alert(response.data)
                   this.props.navigation.navigate("App")
                 })

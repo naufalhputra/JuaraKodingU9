@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image, TouchableOpacity, TextInput, Alert,  } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios'
 
 export default class App extends Component {
@@ -9,7 +10,7 @@ export default class App extends Component {
         // Don't call this.setState() here!
         this.state = { 
             data: [],
-            nameBio:""
+            getBio:""
         };
 
     }
@@ -24,7 +25,7 @@ export default class App extends Component {
 
     getData =()=>{
         //Make a request for a user with a given ID
-        axios.get(`http://192.168.1.7:8080/bio/${this.state.nameBio}`)
+        axios.get(`http://192.168.1.7:8080/bio/${this.state.getBio}`)
         .then( (response) => {
           // console.log(response.data")
           let data=response.data;   
@@ -49,11 +50,11 @@ export default class App extends Component {
       })
     }
 
-     Item = ({ title }) => (
-        <View style={styles.item}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-      );
+    //  Item = ({ title }) => (
+    //     <View style={styles.item}>
+    //       <Text style={styles.title}>{title}</Text>
+    //     </View>
+    //   );
       
     renderItem = ({ item }) => (
         <View style = {{borderWidth:3, borderColor:"black"}}>
@@ -79,9 +80,18 @@ export default class App extends Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
-              <TouchableOpacity onPress={()=>{this.props.navigation.navigate("AddDataBio")}} style={styles.button}><Text style={styles.title}>Tambahkan</Text></TouchableOpacity>
-              
-              <TextInput TextInput placeholder="Cari Buku" onChangeText={(data)=>{this.setState({nameBio:data})}}/>
+
+              <RNPickerSelect pickerProps={{style: {height: 40, overflow: 'hidden'}}} onValueChange={(value) => console.log(value)}
+            items={[
+                { label: 'name', value: 'name' },
+                { label: 'email', value: 'email' },
+                { label: 'phone', value: 'phone' },
+                { label: 'address', value: 'address' },
+
+
+            ]}
+        />
+              <TextInput TextInput placeholder="Cari" onChangeText={(data)=>{this.setState({getBio:data})}}/>
               <TouchableOpacity onPress={this.getData.bind(this)} style={styles.button}><Text style={styles.title}>Cari</Text></TouchableOpacity>
               
               <FlatList
@@ -89,14 +99,23 @@ export default class App extends Component {
                 renderItem={this.renderItem}
                 keyExtractor={item => item.id}
               />
-              
+              <TouchableOpacity style={styles.button} onPress={()=>{this.props.navigation.replace("App")}}><Text style={styles.title}>List </Text></TouchableOpacity> 
+              <TouchableOpacity onPress={()=>{this.props.navigation.navigate("AddDataBio")}} style={styles.button}><Text style={styles.title}>Tambahkan</Text></TouchableOpacity>
             </SafeAreaView>
           );
     }
 }
+const selectedItem = {
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+
+};
 
 const styles = StyleSheet.create({
-    container: {
+
+  container: {
       flex: 1,
       marginTop: StatusBar.currentHeight || 0,
     },
