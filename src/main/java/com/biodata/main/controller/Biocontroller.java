@@ -31,11 +31,26 @@ public class Biocontroller {
 		biorepo.save(bio);
 		return "Insert Berhasil";
 	}
-	@GetMapping("/{title}")
-	public List<Bio> getAllByNamaBio(@PathVariable String title) {
-		return biorepo.findByNamaBio(title);
-	}
 	
+	@GetMapping("/{name}")
+	public List<Bio> getAllByNamaBio(@PathVariable String name) {
+		return biorepo.findByNamaBio(name);
+	}
+//	
+//	@GetMapping("/{email}")
+//	public List<Bio> getAllByEmailBio(@PathVariable String email) {
+//		return biorepo.findByEmailBio(email);
+//	}
+//	
+//	@GetMapping("/{phone}")
+//	public List<Bio> getAllByPhoneBio(@PathVariable String phone) {
+//		return biorepo.findByPhoneBio(phone);
+//	}
+//	@GetMapping("/{address}")
+//	public List<Bio> getAllByAddressBio(@PathVariable String address) {
+//		return biorepo.findByAddressBio(address);
+//	}
+
 	@DeleteMapping("/deletebio/{id}")
 	public String deleteBio(@PathVariable String id) {
 		biorepo.deleteById(Long.parseLong(id));
